@@ -15,6 +15,8 @@ namespace Database.Context {
 		public DbSet<TeamUser> TeamUsers { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<Tag> Tags { get; set; }
+		public DbSet<Report> Reports { get; set; }
+		public DbSet<Task> Tasks { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder) {
 			modelBuilder.Entity<TeamUser>()

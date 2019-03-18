@@ -10,5 +10,7 @@ namespace Database.Models {
 		public virtual Category Category { get; set; }
 		public virtual ICollection<ProjectTeam> ProjectTeams { get; set; }
 		public virtual  ICollection<Tag> Tags { get; set; }
+		public virtual ICollection<Task> Tasks { get; set; }
+		public virtual ICollection<Report> Reports { get; set; }
 	}
 }

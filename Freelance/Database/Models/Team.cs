@@ -8,6 +8,6 @@ namespace Database.Models {
 		public virtual User CreatedBy { get; set; }
 		public virtual ICollection<TeamUser> TeamUsers { get; set; }
 		public virtual ICollection<ProjectTeam> ProjectTeams { get; set; }
-
+		public virtual ICollection<Task> Tasks { get; set; }
 	}
 }
