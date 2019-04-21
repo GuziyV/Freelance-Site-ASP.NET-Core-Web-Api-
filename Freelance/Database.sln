@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{FCCEE0C8-1644-47C8-A90B-E332B7C4A1B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{FCCEE0C8-1644-47C8-A90B-E332B7C4A1B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Freelance", "Freelance\Freelance.csproj", "{B40A4EF8-B779-48DA-BF9B-7620909730DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Freelance", "Freelance\Freelance.csproj", "{B40A4EF8-B779-48DA-BF9B-7620909730DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BL", "BL\BL.csproj", "{D822A425-4941-4BB0-B666-FA370D4B6FD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{B40A4EF8-B779-48DA-BF9B-7620909730DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B40A4EF8-B779-48DA-BF9B-7620909730DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B40A4EF8-B779-48DA-BF9B-7620909730DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D822A425-4941-4BB0-B666-FA370D4B6FD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D822A425-4941-4BB0-B666-FA370D4B6FD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D822A425-4941-4BB0-B666-FA370D4B6FD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D822A425-4941-4BB0-B666-FA370D4B6FD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
