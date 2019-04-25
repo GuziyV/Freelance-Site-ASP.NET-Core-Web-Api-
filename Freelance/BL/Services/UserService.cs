@@ -52,7 +52,10 @@ namespace BL.Services {
 			byte[] passwordHash, passwordSalt;
 			CreatePasswordHash(entity.Password, passwordHash: out passwordHash, passwordSalt: out passwordSalt);
 			var user = new User();
+			user.Name = entity.Login;
 			user.Role = entity.Role;
+			user.PasswordHash = passwordHash;
+			user.PasswordSalt = passwordSalt;
 			var u = await PostAsync(user);
 			return u;
 		}
