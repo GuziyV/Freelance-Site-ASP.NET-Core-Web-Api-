@@ -20,7 +20,7 @@ namespace Freelance.Controllers
 		    this.projectService = projectService;
 	    }
 
-		[HttpGet("{userId}")]
+		[HttpGet]
 	    public Task<IEnumerable<Project>> GetByUserId(int userId) {
 		    return projectService.GetByUserId(userId);
 	    }
