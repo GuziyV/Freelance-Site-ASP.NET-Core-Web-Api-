@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BL.Services;
+using Database.DTOs;
 using Database.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,8 +27,8 @@ namespace Freelance.Controllers
 	    }
 
 	    [HttpPost]
-	    public Task<Project> AcceptInvitation([FromBody]Project project) {
-		    return projectService.PostAsync(project);
+	    public Task<Project> CreateProject([FromBody]CreateProjectDTO project) {
+		    return projectService.PostAsync(projectService.Convert(project));
 	    }
 	}
 }
