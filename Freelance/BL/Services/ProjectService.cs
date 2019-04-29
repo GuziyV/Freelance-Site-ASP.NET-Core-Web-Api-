@@ -18,13 +18,21 @@ namespace BL.Services {
 				.Include(p => p.ProjectTeams)
 				.Include(p => p.Category)
 				.Include(p => p.Reports)
-				.Include(p => p.Tasks)/*.Where(p => p.Owner.Id == userId)*/.ToListAsync();
+				.Include(p => p.Tags)
+				.Include(p => p.Tasks)
+				.Where(p => p.Owner.Id == userId)
+				.ToListAsync();
 		}
 
-		public Project Convert(CreateProjectDTO projectDto) {
-			var category = context.Set<Category>().FirstOrDefault(c => c.Name == projectDto.Category);
+		public async Task<Project> Convert(CreateProjectDTO projectDto) {
+			var category = await context.Set<Category>().FirstOrDefaultAsync(c => c.Name == projectDto.Category);
+			var user = await context.Set<User>().FirstOrDefaultAsync(u => u.Id == projectDto.UserId);
 			if (category == null) {
-				throw new ArgumentNullException("Unknown category");
+				throw new NullReferenceException("Unknown category");
+			}
+
+			if (user == null) {
+				throw new NullReferenceException("Unknown user");
 			}
 
 			return new Project() {
@@ -32,6 +40,7 @@ namespace BL.Services {
 				Category = category,
 				Tags = projectDto.Tags,
 				Description = projectDto.Description,
+				Owner = user,
 			};
 		}
 
@@ -43,6 +52,23 @@ namespace BL.Services {
 				.Include(p => p.Reports)
 				.Include(p => p.Tasks)
 				.SingleOrDefaultAsync(proj => proj.Id == resEntity.Id);
+		}
+
+		public async Task<Project> DeleteProject(int projectId, int userId) {
+			if (context != null) {
+				var entity = await context.Set<Project>()
+					.Include(p => p.Owner)
+					.FirstOrDefaultAsync(p => p.Id == projectId);
+				if (entity != null) {
+					if (entity.Owner.Id != userId) {
+						throw new MemberAccessException("You have no access to this data");
+					}
+					var removed = context.Remove<Project>(entity).Entity;
+					await context.SaveChangesAsync();
+					return entity;
+				}
+			}
+			throw new NullReferenceException("Context is missing by some reasons");
 		}
 	}
 }

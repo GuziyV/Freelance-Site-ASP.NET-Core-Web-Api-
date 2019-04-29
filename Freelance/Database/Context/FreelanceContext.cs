@@ -29,6 +29,21 @@ namespace Database.Context {
 				.HasOne(bc => bc.Team)
 				.WithMany(c => c.TeamUsers)
 				.HasForeignKey(bc => bc.TeamId);
+
+			modelBuilder.Entity<Tag>()
+				.HasOne(bc => bc.Project)
+				.WithMany(b => b.Tags)
+				.OnDelete(DeleteBehavior.SetNull);
+
+
+			modelBuilder.Entity<Tag>()
+				.HasOne(bc => bc.Task)
+				.WithMany(b => b.Tags)
+				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Tag>()
+				.Ignore(bc => bc.Task)
+				.Ignore(bc => bc.Project);
 		}
 	}
 }

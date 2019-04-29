@@ -25,7 +25,8 @@ namespace Freelance {
 		public void ConfigureServices(IServiceCollection services) {
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 			services.AddDbContext<FreelanceContext>(options => {
-				options.UseSqlServer(Configuration.GetConnectionString("FreelanceDB"), b => b.MigrationsAssembly("Database"));
+				options.UseLazyLoadingProxies()
+					.UseSqlServer(Configuration.GetConnectionString("FreelanceDB"), b => b.MigrationsAssembly("Database"));
 			});
 			services.AddCors();
 			services.AddScoped<ProjectService>();
