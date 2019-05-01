@@ -56,13 +56,14 @@ namespace BL.Services {
 
 		public async Task<Project> DeleteProject(int projectId, int userId) {
 			if (context != null) {
-				var entity = await context.Set<Project>()
-					.Include(p => p.Owner)
-					.FirstOrDefaultAsync(p => p.Id == projectId);
+				var entity = await context.Set<Project>().Include(t => t.Tags)
+					.FirstOrDefaultAsync(p => p.Id == projectId && p.OwnerId == userId);
 				if (entity != null) {
 					if (entity.Owner.Id != userId) {
 						throw new MemberAccessException("You have no access to this data");
 					}
+
+					entity.Tags = null;
 					var removed = context.Remove<Project>(entity).Entity;
 					await context.SaveChangesAsync();
 					return entity;

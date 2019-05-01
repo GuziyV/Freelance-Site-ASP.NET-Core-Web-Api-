@@ -30,16 +30,11 @@ namespace Database.Context {
 				.WithMany(c => c.TeamUsers)
 				.HasForeignKey(bc => bc.TeamId);
 
-			modelBuilder.Entity<Tag>()
-				.HasOne(bc => bc.Project)
-				.WithMany(b => b.Tags)
-				.OnDelete(DeleteBehavior.SetNull);
+			modelBuilder.Entity<Project>()
+				.HasMany(b => b.Tags)
+				.WithOne(t => t.Project)
+				.OnDelete(DeleteBehavior.Cascade);
 
-
-			modelBuilder.Entity<Tag>()
-				.HasOne(bc => bc.Task)
-				.WithMany(b => b.Tags)
-				.OnDelete(DeleteBehavior.SetNull);
 
 			modelBuilder.Entity<Tag>()
 				.Ignore(bc => bc.Task)

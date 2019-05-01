@@ -7,6 +7,7 @@ namespace Database.Models {
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public virtual User Owner { get; set; }
+		public int OwnerId { get; set; }
 		public virtual Category Category { get; set; }
 		public virtual ICollection<ProjectTeam> ProjectTeams { get; set; }
 		public virtual  ICollection<Tag> Tags { get; set; }

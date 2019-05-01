@@ -57,9 +57,9 @@ namespace Freelance.Controllers
 			return await userService.Register(user);
 		}
 
-		[HttpGet("{id}")]
-		public Task<User> GetById(int id) {
-			return userService.GetOneAsync(id);
+		[HttpGet]
+		public async Task<IEnumerable<User>> GetById() {
+			return await userService.GetAllAsync();
 		}
 
 		[HttpPost("acceptInvitation")]

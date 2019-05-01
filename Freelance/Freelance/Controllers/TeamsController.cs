@@ -28,7 +28,9 @@ namespace Freelance.Controllers {
 
 		[HttpGet]
 		public async Task<IEnumerable<Team>> GetAll() {
-			return await teamService.GetAllAsync();
+			var claimsIdentity = this.User.Identity as ClaimsIdentity;
+			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
+			return (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId);
 		}
 
 		[HttpPost]
