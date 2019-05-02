@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BL.Services;
 using Database.DTOs;
 using Database.Models;
+using Database.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,24 +23,20 @@ namespace Freelance.Controllers {
 		}
 
 		[HttpGet]
-		public async Task<IEnumerable<Team>> GetByUserId(string tag) {
-			return await teamService.GetTeamByTagName(tag);
-		}
-
-		[HttpGet]
-		public async Task<IEnumerable<Team>> GetAll() {
+		public async Task<IEnumerable<TeamDTO>> GetAll() {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
-			return (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId);
+			var all = (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId);
+			return all.ConvertAll();
 		}
 
 		[HttpPost]
-		public async Task<Team> DeleteProject([FromBody]CreateTeamDto team) {
+		public async Task<TeamDTO> DeleteProject([FromBody]CreateTeamDto team) {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 			team.CreatedById = UserId;
 
-			return await teamService.PostAsync(await teamService.Convert(team));
+			return (await teamService.PostAsync(await teamService.Convert(team))).Convert();
 		}
 	}
 }
