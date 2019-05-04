@@ -35,6 +35,26 @@ namespace Database.Context {
 				.WithOne(t => t.Project)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			modelBuilder.Entity<Team>()
+				.HasMany(bc => bc.TeamUsers)
+				.WithOne(c => c.Team)
+				.HasForeignKey(bc => bc.TeamId);
+
+			modelBuilder.Entity<Team>()
+				.HasMany(bc => bc.ProjectTeams)
+				.WithOne(c => c.Team)
+				.HasForeignKey(bc => bc.TeamId);
+
+			modelBuilder.Entity<Team>()
+				.HasMany(bc => bc.Tasks)
+				.WithOne(c => c.Team)
+				.HasForeignKey(bc => bc.TeamId);
+
+
+			modelBuilder.Entity<User>()
+				.HasMany(bc => bc.TeamUsers)
+				.WithOne(c => c.User)
+				.HasForeignKey(bc => bc.UserId);
 
 			modelBuilder.Entity<Tag>()
 				.Ignore(bc => bc.Task)

@@ -4,14 +4,16 @@ using Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Database.Migrations
 {
     [DbContext(typeof(FreelanceContext))]
-    partial class FreelanceContextModelSnapshot : ModelSnapshot
+    [Migration("20190502210404_CorrectBuilder")]
+    partial class CorrectBuilder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,7 +140,7 @@ namespace Database.Migrations
 
                     b.Property<int?>("ProjectId");
 
-                    b.Property<int>("TeamId");
+                    b.Property<int?>("TeamId");
 
                     b.HasKey("Id");
 
@@ -259,10 +261,9 @@ namespace Database.Migrations
                         .WithMany("Tasks")
                         .HasForeignKey("ProjectId");
 
-                    b.HasOne("Database.Models.Team", "Team")
+                    b.HasOne("Database.Models.Team")
                         .WithMany("Tasks")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Database.Models.Team", b =>

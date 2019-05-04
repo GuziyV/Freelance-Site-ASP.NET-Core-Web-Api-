@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BL.Services;
 using Database.DTOs;
 using Database.Models;
+using Database.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,24 +24,24 @@ namespace Freelance.Controllers
 		}
 
 		[HttpGet]
-	    public async Task<IEnumerable<Project>> GetByUserId(int userId) {
-		    return await projectService.GetByUserId(userId);
+	    public async Task<IEnumerable<ProjectDto>> GetByUserId(int userId) {
+		    return (await projectService.GetByUserId(userId)).ConvertAll();
 	    }
 
 	    [HttpPost]
-	    public async Task<Project> CreateProject([FromBody]CreateProjectDTO project) {
+	    public async Task<ProjectDto> CreateProject([FromBody]CreateProjectDTO project) {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			project.UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
-			return await projectService.PostAsync(await projectService.Convert(project));
+			return (await projectService.PostAsync(await projectService.Convert(project))).Convert();
 	    }
 
 	    [HttpDelete("{projectId}")]
-	    public async Task<Project> DeleteProject(int projectId) {
+	    public async Task<ProjectDto> DeleteProject(int projectId) {
 		    var claimsIdentity = this.User.Identity as ClaimsIdentity;
 		    var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
-		    return await projectService.DeleteProject(projectId, UserId);
+		    return (await projectService.DeleteProject(projectId, UserId)).Convert();
 	    }
 	}
 }

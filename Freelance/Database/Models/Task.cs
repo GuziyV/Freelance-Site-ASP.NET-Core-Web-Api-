@@ -8,5 +8,7 @@ namespace Database.Models {
 		public string Description { get; set; }
 		public virtual ICollection<Tag> Tags { get; set; }
 		public bool IsClosed { get; set; }
+		public virtual Team Team { get; set; }
+		public virtual int TeamId { get; set; }
 	}
 }

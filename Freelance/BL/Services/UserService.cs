@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Database.DTOs;
 using Database.Models;
+using Database.Services;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 
@@ -27,7 +28,7 @@ namespace BL.Services {
 		}
 
 		public async Task<IEnumerable<User>> GetUsersByTask(int taskId) {
-			return await context.Set<Team>().Where(t => t.Tasks.Any(ta => ta.Id == taskId)).SelectMany(te => te.TeamUsers.Select(tu => tu.User)).ToListAsync();
+			return (await context.Set<Team>().Where(t => t.Tasks.Any(ta => ta.Id == taskId)).SelectMany(te => te.TeamUsers.Select(tu => tu.User)).ToListAsync());
 		}
 
 		public async System.Threading.Tasks.Task<User> Authentificate(string login, string password) {

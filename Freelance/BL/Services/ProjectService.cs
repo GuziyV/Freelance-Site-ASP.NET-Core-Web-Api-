@@ -47,11 +47,11 @@ namespace BL.Services {
 		public override async Task<Project> PostAsync(Project entity) {
 			var resEntity = context != null ? (await context.Set<Project>().AddAsync(entity)).Entity : null;
 			await context.SaveChangesAsync();
-			return await context.Set<Project>()
+			return (await context.Set<Project>()
 				.Include(p => p.ProjectTeams)
 				.Include(p => p.Reports)
 				.Include(p => p.Tasks)
-				.SingleOrDefaultAsync(proj => proj.Id == resEntity.Id);
+				.SingleOrDefaultAsync(proj => proj.Id == resEntity.Id));
 		}
 
 		public async Task<Project> DeleteProject(int projectId, int userId) {

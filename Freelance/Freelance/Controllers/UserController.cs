@@ -9,6 +9,7 @@ using BL.Helpers;
 using BL.Services;
 using Database.DTOs;
 using Database.Models;
+using Database.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,18 +49,18 @@ namespace Freelance.Controllers
 			var token = tokenHandler.CreateToken(tokenDescriptor);
 			var tokenString = tokenHandler.WriteToken(token);
 
-			return new JsonResult(new { user = authUser, tokenString });
+			return new JsonResult(new { user = authUser.Convert(), tokenString });
 		}
 
 		[AllowAnonymous]
 		[HttpPost("register")]
-		public async Task<User> Register([FromBody]RegisterUserDTO user) {
-			return await userService.Register(user);
+		public async Task<UserDto> Register([FromBody]RegisterUserDTO user) {
+			return (await userService.Register(user)).Convert();
 		}
 
 		[HttpGet]
-		public async Task<IEnumerable<User>> GetById() {
-			return await userService.GetAllAsync();
+		public async Task<IEnumerable<UserDto>> GetById() {
+			return (await userService.GetAllAsync()).ConvertAll();
 		}
 
 		[HttpPost("acceptInvitation")]
@@ -68,8 +69,8 @@ namespace Freelance.Controllers
 		}
 
 		[HttpGet("task")]
-		public Task<IEnumerable<User>> GetUsersByTask(int taskId) {
-			return userService.GetUsersByTask(taskId);
+		public async Task<IEnumerable<UserDto>> GetUsersByTask(int taskId) {
+			return (await userService.GetUsersByTask(taskId)).ConvertAll();
 		}
 		[HttpGet("task")]
 		public Task<IEnumerable<dynamic>> Get() {
