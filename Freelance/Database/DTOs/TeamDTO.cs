@@ -9,7 +9,7 @@ namespace Database.DTOs {
 		public string Name { get; set; }
 		public string CreatedBy { get; set; }
 		public IEnumerable<string> Users { get; set; }
-		public virtual IEnumerable<string> Projects { get; set; }
+		public virtual IEnumerable<ProjectDto> Projects { get; set; }
 		public virtual IEnumerable<string> Tasks { get; set; }
 	}
 }

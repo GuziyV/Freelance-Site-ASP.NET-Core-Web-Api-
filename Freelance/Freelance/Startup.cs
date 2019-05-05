@@ -33,6 +33,7 @@ namespace Freelance {
 			services.AddScoped<UserService>();
 			services.AddScoped<ReportService>();
 			services.AddScoped<TeamService>();
+			services.AddScoped<TaskService>();
 			services.AddScoped(typeof(ICRUDService<>), typeof(CRUDService<>));
 			services.AddScoped<DbContext, FreelanceContext>();
 

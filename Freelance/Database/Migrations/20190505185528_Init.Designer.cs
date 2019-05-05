@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(FreelanceContext))]
-    [Migration("20190504114938_CorrectTeamConstranit")]
-    partial class CorrectTeamConstranit
+    [Migration("20190505185528_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -65,9 +65,9 @@ namespace Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ProjectId");
+                    b.Property<int?>("ProjectId");
 
-                    b.Property<int>("TeamId");
+                    b.Property<int?>("TeamId");
 
                     b.HasKey("Id");
 
@@ -92,6 +92,8 @@ namespace Database.Migrations
 
                     b.Property<int?>("TeamId");
 
+                    b.Property<int?>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProjectId");
@@ -99,6 +101,8 @@ namespace Database.Migrations
                     b.HasIndex("TaskId");
 
                     b.HasIndex("TeamId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reports");
                 });
@@ -140,7 +144,7 @@ namespace Database.Migrations
 
                     b.Property<int?>("ProjectId");
 
-                    b.Property<int>("TeamId");
+                    b.Property<int?>("TeamId");
 
                     b.HasKey("Id");
 
@@ -170,9 +174,9 @@ namespace Database.Migrations
 
             modelBuilder.Entity("Database.Models.TeamUser", b =>
                 {
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
-                    b.Property<int>("TeamId");
+                    b.Property<int?>("TeamId");
 
                     b.Property<bool>("IsActivated");
 
@@ -225,46 +229,52 @@ namespace Database.Migrations
 
                     b.HasOne("Database.Models.Team", "Team")
                         .WithMany("ProjectTeams")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Database.Models.Report", b =>
                 {
-                    b.HasOne("Database.Models.Project")
-                        .WithMany("Reports")
+                    b.HasOne("Database.Models.Project", "Project")
+                        .WithMany()
                         .HasForeignKey("ProjectId");
 
                     b.HasOne("Database.Models.Task", "Task")
-                        .WithMany()
-                        .HasForeignKey("TaskId");
+                        .WithMany("Reports")
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Database.Models.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId");
+
+                    b.HasOne("Database.Models.User", "User")
+                        .WithMany("Reports")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Database.Models.Tag", b =>
                 {
-                    b.HasOne("Database.Models.Project")
+                    b.HasOne("Database.Models.Project", "Project")
                         .WithMany("Tags")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Database.Models.Task")
+                    b.HasOne("Database.Models.Task", "Task")
                         .WithMany("Tags")
-                        .HasForeignKey("TaskId");
+                        .HasForeignKey("TaskId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Database.Models.Task", b =>
                 {
-                    b.HasOne("Database.Models.Project")
+                    b.HasOne("Database.Models.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectId");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Database.Models.Team", "Team")
                         .WithMany("Tasks")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TeamId");
                 });
 
             modelBuilder.Entity("Database.Models.Team", b =>

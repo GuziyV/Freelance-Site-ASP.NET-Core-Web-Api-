@@ -35,6 +35,26 @@ namespace Database.Context {
 				.WithOne(t => t.Project)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			modelBuilder.Entity<Task>()
+				.HasMany(b => b.Reports)
+				.WithOne(t => t.Task)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Task>()
+				.HasOne(b => b.Project)
+				.WithMany(t => t.Tasks)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Project>()
+				.HasMany(b => b.Tasks)
+				.WithOne(t => t.Project)
+				.OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<Project>()
+				.HasMany(b => b.ProjectTeams)
+				.WithOne(t => t.Project)
+				.OnDelete(DeleteBehavior.Cascade);
+
 			modelBuilder.Entity<Team>()
 				.HasMany(bc => bc.TeamUsers)
 				.WithOne(c => c.Team)
@@ -57,8 +77,16 @@ namespace Database.Context {
 				.HasForeignKey(bc => bc.UserId);
 
 			modelBuilder.Entity<Tag>()
-				.Ignore(bc => bc.Task)
-				.Ignore(bc => bc.Project);
+				.HasOne(bc => bc.Project)
+				.WithMany(c => c.Tags)
+				.HasForeignKey(bc => bc.ProjectId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Tag>()
+				.HasOne(bc => bc.Task)
+				.WithMany(c => c.Tags)
+				.HasForeignKey(bc => bc.TaskId)
+				.OnDelete(DeleteBehavior.Restrict);
 		}
 	}
 }

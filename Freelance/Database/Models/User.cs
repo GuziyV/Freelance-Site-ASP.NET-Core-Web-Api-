@@ -11,5 +11,6 @@ namespace Database.Models {
 		public byte[] PasswordHash { get; set; }
 		public byte[] PasswordSalt { get; set; }
 		public virtual ICollection<TeamUser> TeamUsers { get; set; }
+		public virtual ICollection<Report> Reports { get; set; }
 	}
 }

@@ -14,7 +14,7 @@ namespace Database.Services {
 				Name = team.Name,
 				Users = team.TeamUsers?.Select(u => u.User?.Name),
 				Tasks = team.Tasks?.Select(u => u.Name),
-				Projects = team.ProjectTeams?.Select(u => u.Project?.Title),
+				Projects = team.ProjectTeams?.Select(u => u.Project?.Convert()),
 			};
 
 			return teamDto;
@@ -32,8 +32,7 @@ namespace Database.Services {
 				Description = project.Description,
 				Category = project.Category?.Name,
 				ProjectTeams = project.ProjectTeams?.Select(u => u.Team.Name),
-				Tasks= project.Tasks?.Select(u => u.Name),
-				Reports = project.Reports?.Select(u => u.Content),
+				Tasks = project.Tasks?.Select(u => u.Name),
 				Tags = project.Tags?.Select(t => t.Name),
 			};
 
@@ -57,6 +56,33 @@ namespace Database.Services {
 		}
 
 		public static IEnumerable<UserDto> ConvertAll(this IEnumerable<User> team) {
+			return team.Select(t => t.Convert());
+		}
+
+		public static TaskDto Convert(this Task task) {
+			return new TaskDto() {
+				Id = task.Id,
+				Name = task.Name,
+				Description = task.Description,
+				Tags = task.Tags.Select(t => t.Name).ToList(),
+				IsClosed = task.IsClosed,
+				Team = task.Team?.Convert(),
+				ProjectId = task.ProjectId,
+			};
+		}
+
+		public static IEnumerable<TaskDto> ConvertAll(this IEnumerable<Task> team) {
+			return team.Select(t => t.Convert());
+		}
+
+		public static ReportDto Convert(this Report report) {
+			return new ReportDto() {
+				Content = report.Content,
+				Task = report.Task?.Convert(),
+			};
+		}
+
+		public static IEnumerable<ReportDto> ConvertAll(this IEnumerable<Report> team) {
 			return team.Select(t => t.Convert());
 		}
 	}

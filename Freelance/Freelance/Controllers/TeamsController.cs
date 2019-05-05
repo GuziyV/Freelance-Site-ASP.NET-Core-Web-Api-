@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BL.Services;
 using Database.DTOs;
+using Database.Enums;
 using Database.Models;
 using Database.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,9 @@ namespace Freelance.Controllers {
 		public async Task<IEnumerable<TeamDTO>> GetAll() {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
-			var all = (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId);
+			var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
+			var all = role == Role.Manager ? (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId) :
+				(await teamService.GetAllAsync()).Where(t => t.TeamUsers.Any(u => u.UserId == UserId));
 			return all.ConvertAll();
 		}
 

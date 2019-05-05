@@ -17,7 +17,6 @@ namespace BL.Services {
 			return await this.context.Set<Project>()
 				.Include(p => p.ProjectTeams)
 				.Include(p => p.Category)
-				.Include(p => p.Reports)
 				.Include(p => p.Tags)
 				.Include(p => p.Tasks)
 				.Where(p => p.Owner.Id == userId)
@@ -49,7 +48,6 @@ namespace BL.Services {
 			await context.SaveChangesAsync();
 			return (await context.Set<Project>()
 				.Include(p => p.ProjectTeams)
-				.Include(p => p.Reports)
 				.Include(p => p.Tasks)
 				.SingleOrDefaultAsync(proj => proj.Id == resEntity.Id));
 		}

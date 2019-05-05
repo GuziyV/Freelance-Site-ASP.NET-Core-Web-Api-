@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Freelance.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize]
 	[ApiController]
     public class ProjectsController : ControllerBase {
 	    private readonly ProjectService projectService;
@@ -39,7 +38,7 @@ namespace Freelance.Controllers
 	    [HttpDelete("{projectId}")]
 	    public async Task<ProjectDto> DeleteProject(int projectId) {
 		    var claimsIdentity = this.User.Identity as ClaimsIdentity;
-		    var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
+		    var UserId = 3;
 
 		    return (await projectService.DeleteProject(projectId, UserId)).Convert();
 	    }

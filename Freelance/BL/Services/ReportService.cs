@@ -19,7 +19,7 @@ namespace BL.Services {
 			return await context.Set<Team>()
 				.SelectMany(t => t.ProjectTeams
 					.Where(pt => pt.Project.Id == projectId)
-					.SelectMany(pt => pt.Project.Reports))
+					.SelectMany(pt => pt.Project.Tasks)).SelectMany(t=>t.Reports)
 					.ToListAsync();
 		}
 	}
