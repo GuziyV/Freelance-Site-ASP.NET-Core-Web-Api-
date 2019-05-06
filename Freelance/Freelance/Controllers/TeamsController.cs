@@ -29,17 +29,16 @@ namespace Freelance.Controllers {
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 			var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
 			var all = role == Role.Manager ? (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId) :
-				(await teamService.GetAllAsync()).Where(t => t.TeamUsers.Any(u => u.UserId == UserId));
-			return all.ConvertAll();
+				(await teamService.GetAllAsync()).Where(t => t.TeamUsers.Any(u => u.UserId == UserId && u.IsDeclined == false));
+			return all.ConvertAll(UserId);
 		}
 
 		[HttpPost]
-		public async Task<TeamDTO> DeleteProject([FromBody]CreateTeamDto team) {
+		public async Task<TeamDTO> ChangeInviteStatus(int teamId, bool status) {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
-			team.CreatedById = UserId;
 
-			return (await teamService.PostAsync(await teamService.Convert(team))).Convert();
+			return (await teamService.ChangeInviteStatus(UserId, teamId, status)).Convert(UserId);
 		}
 	}
 }

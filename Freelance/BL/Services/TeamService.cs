@@ -17,6 +17,22 @@ namespace BL.Services {
 			return await context.Set<Team>().Where(t => t.Tasks.Any(task => task.Tags.Any(tag => tag.Name == tagName))).ToListAsync();
 		}
 
+		public async Task<Team> ChangeInviteStatus(int userId, int teamId, bool status) {
+			var teamUser = await context.Set<TeamUser>().FirstOrDefaultAsync(t => t.UserId == userId && t.TeamId == teamId);
+			if (teamUser == null) {
+				throw new NullReferenceException("TeamUser can not be null");
+			}
+
+			if (status) {
+				teamUser.IsActivated = true;
+			}
+			else {
+				teamUser.IsDeclined = true;
+			}
+
+			return teamUser.Team;
+		}
+
 		public async Task<Team> Convert(CreateTeamDto team) {
 			List<TeamUser> teamUsers = new List<TeamUser>();
 			foreach (var teamUserId in team.UserIds) {

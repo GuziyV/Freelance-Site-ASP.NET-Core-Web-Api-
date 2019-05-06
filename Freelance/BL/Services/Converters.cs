@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Database.Services {
 	public static class Converters {
-		public static TeamDTO Convert(this Team team) {
+		public static TeamDTO Convert(this Team team, int userId) {
 			var teamDto = new TeamDTO() {
 				Id = team.Id,
 				CreatedBy = team.CreatedBy?.Name,
@@ -15,13 +15,14 @@ namespace Database.Services {
 				Users = team.TeamUsers?.Select(u => u.User?.Name),
 				Tasks = team.Tasks?.Select(u => u.Name),
 				Projects = team.ProjectTeams?.Select(u => u.Project?.Convert()),
+				IsAccepted = team.TeamUsers.Any(u => u.UserId == userId && u.IsActivated == true)
 			};
 
 			return teamDto;
 		}
 
-		public static IEnumerable<TeamDTO> ConvertAll(this IEnumerable<Team> team) {
-			return team.Select(t => t.Convert());
+		public static IEnumerable<TeamDTO> ConvertAll(this IEnumerable<Team> team, int userId) {
+			return team.Select(t => t.Convert(userId));
 		}
 
 		public static ProjectDto Convert(this Project project) {
@@ -49,7 +50,7 @@ namespace Database.Services {
 				Name = user.Name,
 				Role = user.Role,
 				Rating = user.Rating,
-				TeamUsers = user.TeamUsers?.Select(tu => tu?.Team).ConvertAll()
+				TeamUsers = user.TeamUsers?.Select(tu => tu?.Team).ConvertAll(user.Id)
 			};
 
 			return userDto;
@@ -66,7 +67,7 @@ namespace Database.Services {
 				Description = task.Description,
 				Tags = task.Tags.Select(t => t.Name).ToList(),
 				IsClosed = task.IsClosed,
-				Team = task.Team?.Convert(),
+				Team = task.Team?.Convert(0),
 				ProjectId = task.ProjectId,
 			};
 		}

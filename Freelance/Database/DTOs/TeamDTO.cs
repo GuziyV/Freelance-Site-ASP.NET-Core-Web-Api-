@@ -11,5 +11,6 @@ namespace Database.DTOs {
 		public IEnumerable<string> Users { get; set; }
 		public virtual IEnumerable<ProjectDto> Projects { get; set; }
 		public virtual IEnumerable<string> Tasks { get; set; }
+		public bool IsAccepted { get; set; }
 	}
 }
