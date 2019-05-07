@@ -35,6 +35,11 @@ namespace Database.Context {
 				.WithOne(t => t.Project)
 				.OnDelete(DeleteBehavior.Cascade);
 
+			modelBuilder.Entity<Project>()
+				.HasMany(b => b.Reports)
+				.WithOne(t => t.Project)
+				.OnDelete(DeleteBehavior.Restrict);
+
 			modelBuilder.Entity<Task>()
 				.HasMany(b => b.Reports)
 				.WithOne(t => t.Task)
