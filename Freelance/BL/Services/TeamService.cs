@@ -25,11 +25,14 @@ namespace BL.Services {
 
 			if (status) {
 				teamUser.IsActivated = true;
+				teamUser.IsDeclined = false;
 			}
 			else {
 				teamUser.IsDeclined = true;
+				teamUser.IsActivated = false;
 			}
 
+			await context.SaveChangesAsync();
 			return teamUser.Team;
 		}
 

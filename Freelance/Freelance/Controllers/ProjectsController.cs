@@ -38,7 +38,7 @@ namespace Freelance.Controllers
 	    [HttpDelete("{projectId}")]
 	    public async Task<ProjectDto> DeleteProject(int projectId) {
 		    var claimsIdentity = this.User.Identity as ClaimsIdentity;
-		    var UserId = 3;
+		    var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
 		    return (await projectService.DeleteProject(projectId, UserId)).Convert();
 	    }

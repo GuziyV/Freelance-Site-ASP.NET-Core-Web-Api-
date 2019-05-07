@@ -45,15 +45,21 @@ namespace Database.Services {
 		}
 
 		public static UserDto Convert(this User user) {
-			var userDto = new UserDto() {
+			try {
+				var userDto = new UserDto() {
 				Id = user.Id,
 				Name = user.Name,
 				Role = user.Role,
 				Rating = user.Rating,
-				TeamUsers = user.TeamUsers?.Select(tu => tu?.Team).ConvertAll(user.Id)
+				TeamUsers = user.TeamUsers?.Select(tu => tu?.Team)?.ConvertAll(user.Id)
 			};
+				return userDto;
 
-			return userDto;
+			}
+			catch (Exception e) {
+				Console.WriteLine(e);
+				throw;
+			}
 		}
 
 		public static IEnumerable<UserDto> ConvertAll(this IEnumerable<User> team) {

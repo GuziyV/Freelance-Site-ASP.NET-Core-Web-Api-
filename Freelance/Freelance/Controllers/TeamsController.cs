@@ -33,12 +33,22 @@ namespace Freelance.Controllers {
 			return all.ConvertAll(UserId);
 		}
 
-		[HttpPost]
+		[HttpPost("{teamId}/invite/{status}")]
 		public async Task<TeamDTO> ChangeInviteStatus(int teamId, bool status) {
 			var claimsIdentity = this.User.Identity as ClaimsIdentity;
 			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 
 			return (await teamService.ChangeInviteStatus(UserId, teamId, status)).Convert(UserId);
 		}
+
+		[HttpPost]
+		public async Task<TeamDTO> CreateTeam([FromBody] CreateTeamDto team) {
+			var claimsIdentity = this.User.Identity as ClaimsIdentity;
+			var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
+			team.CreatedById = UserId;
+
+			return (await teamService.PostAsync(await teamService.Convert(team))).Convert(UserId);
+		}
+
 	}
 }

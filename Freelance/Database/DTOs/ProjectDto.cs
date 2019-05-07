@@ -10,6 +10,6 @@ namespace Database.DTOs {
 		public virtual IEnumerable<string> ProjectTeams { get; set; }
 		public virtual IEnumerable<string> Tags { get; set; }
 		public virtual IEnumerable<string> Tasks { get; set; }
-		public virtual IEnumerable<string> Reports { get; set; }
+		public virtual IEnumerable<ReportDto> Reports { get; set; }
 	}
 }

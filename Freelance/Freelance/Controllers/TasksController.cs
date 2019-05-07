@@ -32,7 +32,7 @@ namespace Freelance.Controllers
 		    var UserId = int.Parse(claimsIdentity.FindFirst(ClaimTypes.Name)?.Value);
 		    var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
 		    var all = role == Role.Manager ? (await taskService.GetAllAsync()).Where(t => t.Team.CreatedBy.Id == UserId) :
-			    (await taskService.GetAllAsync()).Where(t => t.Team.TeamUsers.Any(u => u.UserId == UserId));
+			    (await taskService.GetAllAsync()).Where(t => t.Team.TeamUsers.Any(u => u.UserId == UserId && u.IsActivated));
 		    return all.ConvertAll();
 	    }
 
