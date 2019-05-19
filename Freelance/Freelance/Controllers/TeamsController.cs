@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Freelance.Controllers {
 	[Route("api/[controller]")]
-	[Authorize]
 	[ApiController]
 	public class TeamsController : ControllerBase {
 		private readonly TeamService teamService;
@@ -31,6 +30,11 @@ namespace Freelance.Controllers {
 			var all = role == Role.Manager ? (await teamService.GetAllAsync()).Where(t => t.CreatedBy.Id == UserId) :
 				(await teamService.GetAllAsync()).Where(t => t.TeamUsers.Any(u => u.UserId == UserId && u.IsDeclined == false));
 			return all.ConvertAll(UserId);
+		}
+
+		[HttpGet("{tag}")]
+		public async Task<IEnumerable<TeamDTO>> GetAll(string tag) {
+			return (await teamService.GetTeamByTagName(tag)).ConvertAll(0);
 		}
 
 		[HttpPost("{teamId}/invite/{status}")]

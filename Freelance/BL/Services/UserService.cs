@@ -27,8 +27,8 @@ namespace BL.Services {
 			return true;
 		}
 
-		public async Task<IEnumerable<User>> GetUsersByTask(int taskId) {
-			return (await context.Set<Team>().Where(t => t.Tasks.Any(ta => ta.Id == taskId)).SelectMany(te => te.TeamUsers.Select(tu => tu.User)).ToListAsync());
+		public async Task<IEnumerable<User>> GetUsersByTask(string taskName) {
+			return (await context.Set<Team>().Where(t => t.Tasks.Any(ta => ta.Name == taskName)).SelectMany(te => te.TeamUsers.Select(tu => tu.User)).ToListAsync());
 		}
 
 		public async System.Threading.Tasks.Task<User> Authentificate(string login, string password) {

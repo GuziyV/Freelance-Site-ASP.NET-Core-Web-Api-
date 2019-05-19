@@ -35,6 +35,7 @@ namespace Database.Services {
 				ProjectTeams = project.ProjectTeams?.Select(u => u.Team.Name),
 				Tasks = project.Tasks?.Select(u => u.Name),
 				Tags = project.Tags?.Select(t => t.Name),
+				Reports = project.Reports?.ConvertAll(),
 			};
 
 			return projectDto;
@@ -85,7 +86,7 @@ namespace Database.Services {
 		public static ReportDto Convert(this Report report) {
 			return new ReportDto() {
 				Content = report.Content,
-				Task = report.Task?.Convert(),
+				Team = report.Team?.Name,
 			};
 		}
 

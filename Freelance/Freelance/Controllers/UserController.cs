@@ -68,11 +68,11 @@ namespace Freelance.Controllers
 			return userService.AcceptInvitation(userId, teamId);
 		}
 
-		[HttpGet("task")]
-		public async Task<IEnumerable<UserDto>> GetUsersByTask(int taskId) {
-			return (await userService.GetUsersByTask(taskId)).ConvertAll();
+		[HttpGet("task/{task}")]
+		public async Task<IEnumerable<UserDto>> GetUsersByTask(string task) {
+			return (await userService.GetUsersByTask(task)).ConvertAll();
 		}
-		[HttpGet("task")]
+		[HttpGet("user")]
 		public Task<IEnumerable<dynamic>> Get() {
 			return userService.GetNumberOfTeamsForEachUser();
 		}
