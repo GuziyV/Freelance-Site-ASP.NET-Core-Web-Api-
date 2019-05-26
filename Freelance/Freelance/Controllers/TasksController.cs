@@ -17,10 +17,12 @@ namespace Freelance.Controllers
     public class TasksController : ControllerBase
     {
 	    private readonly TaskService taskService;
+	    private readonly ReportService reportService;
 
-	    public TasksController(TaskService projectService) {
+		public TasksController(TaskService projectService, ReportService reportService) {
 		    this.taskService = projectService;
-	    }
+		    this.reportService = reportService;
+		}
 		[HttpPost]
 	    public async Task<TaskDto> CreateTask([FromBody]Database.Models.Task task) {
 		    return (await taskService.PostAsync(task)).Convert();
@@ -33,7 +35,13 @@ namespace Freelance.Controllers
 		    var role = claimsIdentity.FindFirst(ClaimTypes.Role)?.Value;
 		    var all = role == Role.Manager ? (await taskService.GetAllAsync()).Where(t => t.Team.CreatedBy.Id == UserId) :
 			    (await taskService.GetAllAsync()).Where(t => t.Team.TeamUsers.Any(u => u.UserId == UserId && u.IsActivated));
-		    return all.ConvertAll();
+		    var allConverted =  all.ConvertAll().ToList();
+		    for(int i = 0 ; i < allConverted.Count(); i++) {
+			    allConverted[i].AvailableStoryPoints = allConverted[i].StoryPoints -
+			                                (await reportService.GetReportsByTask(allConverted[i].Id)).Aggregate(0,
+				                                (total, next) => total + next.CompletedStoryPoints);
+		    }
+		    return allConverted;
 	    }
 
 	}

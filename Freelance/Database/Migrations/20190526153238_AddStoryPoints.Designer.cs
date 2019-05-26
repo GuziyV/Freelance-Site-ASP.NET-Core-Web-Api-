@@ -4,14 +4,16 @@ using Database.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Database.Migrations
 {
     [DbContext(typeof(FreelanceContext))]
-    partial class FreelanceContextModelSnapshot : ModelSnapshot
+    [Migration("20190526153238_AddStoryPoints")]
+    partial class AddStoryPoints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,8 +145,6 @@ namespace Database.Migrations
                     b.Property<string>("Name");
 
                     b.Property<int?>("ProjectId");
-
-                    b.Property<int>("StoryPoints");
 
                     b.Property<int?>("TeamId");
 

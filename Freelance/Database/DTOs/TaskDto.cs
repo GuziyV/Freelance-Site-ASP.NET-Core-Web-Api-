@@ -11,5 +11,8 @@ namespace Database.DTOs {
 		public bool IsClosed { get; set; }
 		public TeamDTO Team { get; set; }
 		public int? ProjectId { get; set; }
+		public int StoryPoints { get; set; }
+		public int AvailableStoryPoints { get; set; }
+		public int CompletedStoryPoints { get; set; } = 1;
 	}
 }

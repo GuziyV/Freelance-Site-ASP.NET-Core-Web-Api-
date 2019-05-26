@@ -22,5 +22,12 @@ namespace BL.Services {
 					.SelectMany(pt => pt.Project.Tasks)).SelectMany(t=>t.Reports)
 					.ToListAsync();
 		}
+
+		public async Task<IEnumerable<Report>> GetReportsByTask(int taskId) {
+			return await context.Set<Report>().Where(r => r.TaskId == taskId).ToListAsync();
+		}
+		public async Task<IEnumerable<Report>> GetReportsByUser(int userId) {
+			return await context.Set<Report>().Where(r => r.UserId == userId).ToListAsync();
+		}
 	}
 }

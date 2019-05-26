@@ -13,5 +13,6 @@ namespace Database.Models {
 		public int? UserId { get; set; }
 		public virtual Project Project { get; set; }
 		public int? ProjectId { get; set; }
+		public int CompletedStoryPoints { get; set; }
 	}
 }

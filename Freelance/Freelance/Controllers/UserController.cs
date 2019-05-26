@@ -24,10 +24,11 @@ namespace Freelance.Controllers
 	public class UserController : ControllerBase {
 		private readonly UserService userService;
 		private readonly AppSettings appSettings;
-
-		public UserController(UserService userService, IOptions<AppSettings> appSettings) {
+		private readonly ReportService reportService;
+		public UserController(UserService userService, IOptions<AppSettings> appSettings, ReportService reportService) {
 			this.userService = userService;
 			this.appSettings = appSettings.Value;
+			this.reportService = reportService;
 		}
 
 		[AllowAnonymous]
@@ -70,7 +71,14 @@ namespace Freelance.Controllers
 
 		[HttpGet("task/{task}")]
 		public async Task<IEnumerable<UserDto>> GetUsersByTask(string task) {
-			return (await userService.GetUsersByTask(task)).ConvertAll();
+			var users =  (await userService.GetUsersByTask(task)).ConvertAll().ToList();
+			for (int i = 0; i < users.Count(); i++) {
+				users[i].StoryPoints = (await reportService.GetReportsByUser(users[i].Id)).Aggregate(0,
+					                                       (total, next) => total + next.CompletedStoryPoints);
+			}
+
+			return users;
+
 		}
 		[HttpGet("user")]
 		public Task<IEnumerable<dynamic>> Get() {

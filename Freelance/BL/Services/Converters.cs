@@ -76,6 +76,7 @@ namespace Database.Services {
 				IsClosed = task.IsClosed,
 				Team = task.Team?.Convert(0),
 				ProjectId = task.ProjectId,
+				StoryPoints = task.StoryPoints,
 			};
 		}
 
@@ -87,6 +88,7 @@ namespace Database.Services {
 			return new ReportDto() {
 				Content = report.Content,
 				Team = report.Team?.Name,
+				CompletedStoryPoints = report.CompletedStoryPoints,
 			};
 		}
 

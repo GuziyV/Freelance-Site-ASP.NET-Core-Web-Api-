@@ -9,5 +9,6 @@ namespace Database.DTOs {
 		public double? Rating { get; set; }
 		public string Role { get; set; }
 		public virtual IEnumerable<TeamDTO> TeamUsers { get; set; }
+		public int StoryPoints { get; set; }
 	}
 }

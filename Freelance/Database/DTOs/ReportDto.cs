@@ -5,5 +5,6 @@
 		public TaskDto Task { get; set; }
 		public UserDto UserDto { get; set; }
 		public string Content { get; set; }
+		public int CompletedStoryPoints { get; set; }
 	}
 }
